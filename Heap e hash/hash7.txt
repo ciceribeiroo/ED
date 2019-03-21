@@ -1,0 +1,62 @@
+#include <iostream>
+#include <algorithm> 
+using namespace std;
+
+class MinHeap
+{
+	private:
+		int* dados;
+		int tam;
+	public:
+		MinHeap(int umTam, int* vet);
+		~MinHeap();
+		void corrigeDescendo( int i );
+};
+MinHeap::MinHeap(int umTam, int* vetor){
+	dados= new int[umTam];
+	tam = umTam;
+	for (int i = 0; i < tam; i++){
+		dados[i] = vetor[i];
+	}
+	for ( int i = (tam/2) - 1; i >= 0; i-- ){
+		corrigeDescendo(i);
+		cout << i << ": ";
+		for ( int j = 0; j < tam; j++ ){
+			cout << dados[j] << " ";
+		}
+		cout << endl;
+	}
+}
+MinHeap::~MinHeap(){
+	delete(dados);
+}
+
+void MinHeap:: corrigeDescendo(int i){
+	int esq = 2*i+1;
+	int dir = 2*i+2;
+	int menor = i;
+	if (( esq < tam) && (dados[esq] < dados[i])){
+		menor = esq;
+	}
+	if (( dir < tam) && ( dados[dir] < dados[menor] )){
+		menor = dir;
+	}
+	if (menor != i){
+		swap(dados[i], dados[menor]);
+		corrigeDescendo(menor);
+	}
+}
+int main()
+{
+    int n;
+    cin >> n;
+    
+    int* vet = new int [n];
+    for ( int i = 0 ; i < n; i++ ){
+		cin >> vet[i];
+	}
+	MinHeap *minh = new MinHeap ( n, vet );
+	delete(vet);
+	delete(minh);
+    return 0;
+}
